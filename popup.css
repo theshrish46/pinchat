@@ -1,0 +1,40 @@
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial;
+  width: 320px;
+}
+.container {
+  padding: 12px;
+}
+h1 {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+}
+#start-select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.pin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  background: #f7f7f7;
+}
+.pin .meta {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pin button {
+  margin-left: 8px;
+}
+.footer {
+  margin-top: 10px;
+  color: #666;
+  font-size: 12px;
+}
