@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ChatMark — Jump to pinned chats",
+  "name": "Pinchat — Jump to pinned chats",
   "version": "0.1.0",
   "description": "Pin chat threads or any element and jump to them instantly to avoid endless scrolling.",
   "permissions": ["storage", "activeTab", "scripting", "contextMenus", "tabs"],
