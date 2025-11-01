@@ -1,60 +1,61 @@
-console.log("ChatMark content script active on", location.href);
+// 📌 Pinchat — Content Script
+console.log("📍 Pinchat content script active on:", location.href);
 
 let selecting = false;
+let prevEl = null;
 
+// Listen for messages from background or popup
 chrome.runtime.onMessage.addListener((msg) => {
-  if (msg.type === "start-select") {
-    if (!selecting) {
-      startSelectionMode();
-    }
-  } else if (msg.type === "jump-to") {
-    jumpToPinnedElement(msg.pin);
+  switch (msg.type) {
+    case "start-select":
+      if (!selecting) startSelectionMode();
+      break;
+    case "jump-to":
+      jumpToPinnedElement(msg.pin);
+      break;
   }
 });
 
+// --- Selection Mode ---
 function startSelectionMode() {
   selecting = true;
   document.body.style.cursor = "crosshair";
   document.addEventListener("mouseover", highlightElement);
   document.addEventListener("mouseout", unhighlightElement);
   document.addEventListener("click", captureElement, { once: true });
-  console.log("ChatMark: Selection mode started.");
+  console.log("📍 Pinchat: Selection mode started.");
 }
 
-let prevEl = null;
 function highlightElement(e) {
   if (prevEl) prevEl.style.outline = "";
   prevEl = e.target;
-  prevEl.style.outline = "2px solid orange";
+  prevEl.style.outline = "2px solid #ff9800"; // warm orange
+  e.stopPropagation();
 }
 
 function unhighlightElement(e) {
   e.target.style.outline = "";
+  e.stopPropagation();
 }
 
-// Function to capture an element and make it a pin
+// --- Capture Selected Element ---
 function captureElement(e) {
   e.preventDefault();
   e.stopPropagation();
 
   const el = e.target;
-  el.style.outline = "";
-  document.body.style.cursor = "default";
-  document.removeEventListener("mouseover", highlightElement);
-  document.removeEventListener("mouseout", unhighlightElement);
-  selecting = false;
+  cleanupSelectionMode();
 
-  const text = el.innerText || el.textContent || "";
+  const text = el.innerText?.trim() || el.textContent?.trim() || "";
   const selector = getUniqueSelector(el);
   const scrollY = window.scrollY;
   const pageTitle = document.title;
   const url = location.href;
 
-  let name = prompt(
-    "Give this pin name:",
-    text.slice(0, 40) || "Pinned Element"
-  );
-  if (!name || !name.trim()) name = text.slice(0, 40) || "Pinned Element";
+  // Ask for pin name
+  const defaultName = text.slice(0, 40) || "Pinned Element";
+  let name = prompt("📌 Give this pin a name:", defaultName);
+  if (!name || !name.trim()) name = defaultName;
 
   const pin = { name, text, selector, scrollY, url, title: pageTitle };
 
@@ -63,22 +64,32 @@ function captureElement(e) {
     pins.push(pin);
     chrome.storage.local.set({ pins }, () => {
       chrome.runtime.sendMessage({ type: "pins-updated" });
-      alert(
-        "✅ Pinned: " + (title ? title : text.slice(0, 40) || "element") + "..."
-      );
+      alert(`✅ Pinned: “${name}” saved successfully!`);
     });
   });
 }
 
+// --- Cleanup ---
+function cleanupSelectionMode() {
+  selecting = false;
+  document.body.style.cursor = "default";
+  document.removeEventListener("mouseover", highlightElement);
+  document.removeEventListener("mouseout", unhighlightElement);
+  document.removeEventListener("click", captureElement);
+  if (prevEl) prevEl.style.outline = "";
+  prevEl = null;
+}
+
+// --- Unique Selector Builder ---
 function getUniqueSelector(el) {
   if (!(el instanceof Element)) return null;
   const path = [];
   while (el && el.nodeType === Node.ELEMENT_NODE) {
     let selector = el.nodeName.toLowerCase();
     if (el.id) {
-      selector += `#${el.id}`;
+      selector += `#${CSS.escape(el.id)}`;
       path.unshift(selector);
-      break; // IDs are unique enough
+      break;
     } else {
       let sib = el;
       let nth = 1;
@@ -93,17 +104,18 @@ function getUniqueSelector(el) {
   return path.join(" > ");
 }
 
+// --- Jump to a Pinned Element ---
 function jumpToPinnedElement(pin) {
   if (pin.selector) {
     const el = document.querySelector(pin.selector);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "center" });
-      el.style.outline = "3px solid limegreen";
+      el.style.outline = "3px solid #4caf50"; // subtle green
       setTimeout(() => (el.style.outline = ""), 2000);
     } else {
-      window.scrollTo(0, pin.scrollY || 0);
+      window.scrollTo({ top: pin.scrollY || 0, behavior: "smooth" });
     }
   } else {
-    window.scrollTo(0, pin.scrollY || 0);
+    window.scrollTo({ top: pin.scrollY || 0, behavior: "smooth" });
   }
 }

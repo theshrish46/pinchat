@@ -1,18 +1,30 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pinchat</title>
-<link rel="stylesheet" href="popup.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pinchat</title>
+  <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-<div class="container">
-<h1>Pinchat</h1>
-<button id="start-select">Pin an element</button>
-<div id="pins-list">Loading pins...</div>
-<div class="footer">Tip: use the context menu on the page to pin too.</div>
-</div>
-<script src="popup.js"></script>
+  <div class="container">
+    <header>
+      <h1 class="app-title">📌 Pinchat</h1>
+      <button id="start-select" class="primary-btn">+ Pin an element</button>
+    </header>
+
+    <section id="pins-section">
+      <h2 class="section-title">Your Pins</h2>
+      <ul id="pins-list" class="pins-list">
+        <li class="empty">Loading pins...</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      💡 Tip: You can also right-click any page element to pin it.
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
 </body>
 </html>
