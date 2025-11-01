@@ -1,4 +1,4 @@
-# ChatMark
+# Pinchat
 
 
 ChatMark is a Chrome extension that helps you pin and jump to chat threads or any DOM element across pages. Useful to avoid scrolling fatigue.
