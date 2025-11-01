@@ -1,7 +1,7 @@
 # Pinchat
 
 
-ChatMark is a Chrome extension that helps you pin and jump to chat threads or any DOM element across pages. Useful to avoid scrolling fatigue.
+Pinchat is a Chrome extension that helps you pin and jump to chat threads or any DOM element across pages. Useful to avoid scrolling fatigue.
 
 
 ## Features
@@ -11,10 +11,10 @@ ChatMark is a Chrome extension that helps you pin and jump to chat threads or an
 
 
 ## Installation (developer / testing)
-1. Create a folder `chatmark/` and place the files shown in this repo inside.
+1. Create a folder `Pinchat/` and place the files shown in this repo inside.
 2. Optionally add icons in `icons/` (use any PNGs named icon16.png, icon48.png, icon128.png).
-3. Open Chrome -> Extensions -> Developer Mode -> Load unpacked -> select the `chatmark/` folder.
-4. Click the ChatMark toolbar icon, press "Pin an element" and click an element on the page to pin it.
+3. Open Chrome -> Extensions -> Developer Mode -> Load unpacked -> select the `Pinchat/` folder.
+4. Click the Pinchat toolbar icon, press "Pin an element" and click an element on the page to pin it.
 
 
 ## Notes & Improvements
